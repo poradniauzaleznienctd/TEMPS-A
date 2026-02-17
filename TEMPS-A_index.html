@@ -1,0 +1,2033 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TEMPS-A – Kwestionariusz</title>
+  <style>
+    :root {
+      --page-max: 980px;
+      --border: #2b2b2b;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px 12px;
+      font-family: "Times New Roman", Times, serif;
+      color: #111;
+      background: #f3f3f3;
+    }
+
+    .page {
+      max-width: var(--page-max);
+      margin: 0 auto;
+      background: #fff;
+      padding: 28px 28px 32px;
+      border: 1px solid #d7d7d7;
+      box-shadow: 0 2px 14px rgba(0,0,0,.06);
+    }
+
+    .topline {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .hr {
+      border: none;
+      border-top: 1px solid #000;
+      margin: 10px 0 18px;
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+      font-size: 18px;
+      letter-spacing: .5px;
+    }
+
+    .fields {
+      margin-top: 18px;
+      margin-bottom: 14px;
+      font-size: 18px;
+    }
+
+    .field-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 4px 0;
+      flex-wrap: wrap;
+    }
+
+    .field-label {
+      white-space: nowrap;
+    }
+
+    .line-input {
+      border: none;
+      border-bottom: 1px dotted #000;
+      font-family: inherit;
+      font-size: 18px;
+      padding: 0 2px 2px;
+      min-width: 260px;
+      outline: none;
+    }
+
+    .sex-wrap {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .sex-wrap label {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .title {
+      text-align: center;
+      margin-top: 26px;
+      margin-bottom: 6px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 18px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .instr {
+      font-size: 18px;
+      text-align: center;
+      margin: 0 0 12px;
+      line-height: 1.35;
+    }
+
+    .table-wrap {
+      margin-top: 18px;
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 760px;
+      font-size: 16px;
+    }
+
+    td {
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      vertical-align: middle;
+    }
+
+    .col-num {
+      width: 52px;
+      text-align: right;
+      padding-right: 10px;
+      white-space: nowrap;
+    }
+
+    .col-tn {
+      width: 40px;
+      text-align: center;
+      white-space: nowrap;
+      padding: 6px 4px;
+    }
+
+    .col-text {
+      width: auto;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      opacity: 0;
+      width: 1px;
+      height: 1px;
+      pointer-events: none;
+    }
+
+    /* "Zakreśl T/N" – okrąg wokół litery po wyborze */
+    .choice {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border: 2px solid transparent;
+      border-radius: 999px;
+      cursor: pointer;
+      user-select: none;
+      line-height: 1;
+    }
+
+    input[type="radio"]:focus + .choice {
+      outline: 2px dotted #000;
+      outline-offset: 2px;
+    }
+
+    input[type="radio"]:checked + .choice {
+      border-color: #000;
+    }
+
+    .actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: 16px;
+      padding: 10px 14px;
+      border: 1px solid #000;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      filter: brightness(0.97);
+    }
+
+    .note {
+      font-size: 14px;
+      margin-top: 8px;
+      color: #333;
+    }
+
+    .error {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border: 1px solid #b00020;
+      color: #b00020;
+      background: #fff5f6;
+      display: none;
+      font-size: 15px;
+    }
+
+    .results {
+      margin-top: 16px;
+      padding: 14px 14px;
+      border: 1px solid #000;
+      background: #fff;
+      display: none;
+    }
+
+    .results h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      text-align: left;
+    }
+
+    .result-line {
+      margin: 6px 0;
+      font-size: 16px;
+    }
+
+    .profile-box {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #000;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .page {
+        border: none;
+        box-shadow: none;
+        max-width: none;
+        padding: 18mm 16mm 18mm;
+      }
+      .actions, .note {
+        display: none !important;
+      }
+      .table-wrap {
+        overflow: visible;
+      }
+      table {
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="topline">Skala TEMPS-A – ważne narzędzie do badania temperamentów afektywnych</div>
+    <hr class="hr">
+
+    <h1>ANEKS</h1>
+
+    <form id="tempsForm" novalidate>
+      <div class="fields" aria-label="Dane osoby badanej">
+        <div class="field-row">
+          <span class="field-label">Imię i nazwisko:</span>
+          <input class="line-input" type="text" name="imie_nazwisko" />
+        </div>
+        <div class="field-row">
+          <span class="field-label">Data:</span>
+          <input class="line-input" type="text" name="data" />
+        </div>
+        <div class="field-row">
+          <span class="field-label">Płeć:</span>
+          <span class="sex-wrap">
+            <label><input type="radio" name="plec" value="K">K</label>
+            <label><input type="radio" name="plec" value="M">M</label>
+          </span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Wiek:</span>
+          <input class="line-input" type="text" name="wiek" />
+        </div>
+      </div>
+
+      <div class="title">SKALA TEMPERAMENTU MEMPHIS, PISA, PARIS AND SAN DIEGO</div>
+      <div class="subtitle">Wersja do samouzupełniania (TEMPS-A)</div>
+
+      <p class="instr">
+        Zakreśl T (Tak) we wszystkich przypadkach, w których dane zdanie jest prawdziwe<br>
+        dla <strong>większej części Twojego życia.</strong>
+      </p>
+      <p class="instr">
+        Zakreśl N (Nie) we wszystkich innych przypadkach, w których stwierdzenia nie odnoszą<br>
+        się do większej części Twojego życia.
+      </p>
+
+      <div class="table-wrap" role="region" aria-label="Tabela pytań TEMPS-A">
+        <table>
+          <tbody>
+            
+      <tr>
+        <td class="col-num">1.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q1_t" name="q1" value="T">
+          <label class="choice" for="q1_t" aria-label="Pytanie 1: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q1_n" name="q1" value="N">
+          <label class="choice" for="q1_n" aria-label="Pytanie 1: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem smutną, nieszczęśliwą osobą.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">2.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q2_t" name="q2" value="T">
+          <label class="choice" for="q2_t" aria-label="Pytanie 2: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q2_n" name="q2" value="N">
+          <label class="choice" for="q2_n" aria-label="Pytanie 2: Nie">N</label>
+        </td>
+        <td class="col-text">Ludzie mówią mi, że nie potrafię dostrzec jasnej strony życia.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">3.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q3_t" name="q3" value="T">
+          <label class="choice" for="q3_t" aria-label="Pytanie 3: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q3_n" name="q3" value="N">
+          <label class="choice" for="q3_n" aria-label="Pytanie 3: Nie">N</label>
+        </td>
+        <td class="col-text">Doświadczyłem/am wielu cierpień w swoim życiu.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">4.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q4_t" name="q4" value="T">
+          <label class="choice" for="q4_t" aria-label="Pytanie 4: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q4_n" name="q4" value="N">
+          <label class="choice" for="q4_n" aria-label="Pytanie 4: Nie">N</label>
+        </td>
+        <td class="col-text">Myślę, że sprawy zwykle kończą się bardzo źle.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">5.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q5_t" name="q5" value="T">
+          <label class="choice" for="q5_t" aria-label="Pytanie 5: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q5_n" name="q5" value="N">
+          <label class="choice" for="q5_n" aria-label="Pytanie 5: Nie">N</label>
+        </td>
+        <td class="col-text">Łatwo się poddaję.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">6.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q6_t" name="q6" value="T">
+          <label class="choice" for="q6_t" aria-label="Pytanie 6: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q6_n" name="q6" value="N">
+          <label class="choice" for="q6_n" aria-label="Pytanie 6: Nie">N</label>
+        </td>
+        <td class="col-text">Odkąd pamiętam, zawsze czułem się jak przegrany/a.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">7.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q7_t" name="q7" value="T">
+          <label class="choice" for="q7_t" aria-label="Pytanie 7: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q7_n" name="q7" value="N">
+          <label class="choice" for="q7_n" aria-label="Pytanie 7: Nie">N</label>
+        </td>
+        <td class="col-text">Zawsze obwiniałem się o coś, czego inni nie uważali za wielki problem.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">8.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q8_t" name="q8" value="T">
+          <label class="choice" for="q8_t" aria-label="Pytanie 8: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q8_n" name="q8" value="N">
+          <label class="choice" for="q8_n" aria-label="Pytanie 8: Nie">N</label>
+        </td>
+        <td class="col-text">Wydaje mi się, że mam mniej energii niż inni ludzie.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">9.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q9_t" name="q9" value="T">
+          <label class="choice" for="q9_t" aria-label="Pytanie 9: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q9_n" name="q9" value="N">
+          <label class="choice" for="q9_n" aria-label="Pytanie 9: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem osobą, która nie za bardzo lubi zmiany.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">10.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q10_t" name="q10" value="T">
+          <label class="choice" for="q10_t" aria-label="Pytanie 10: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q10_n" name="q10" value="N">
+          <label class="choice" for="q10_n" aria-label="Pytanie 10: Nie">N</label>
+        </td>
+        <td class="col-text">Gdy jestem w grupie, wolę słuchać, niż mówić.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">11.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q11_t" name="q11" value="T">
+          <label class="choice" for="q11_t" aria-label="Pytanie 11: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q11_n" name="q11" value="N">
+          <label class="choice" for="q11_n" aria-label="Pytanie 11: Nie">N</label>
+        </td>
+        <td class="col-text">Często ustępuję innym.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">12.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q12_t" name="q12" value="T">
+          <label class="choice" for="q12_t" aria-label="Pytanie 12: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q12_n" name="q12" value="N">
+          <label class="choice" for="q12_n" aria-label="Pytanie 12: Nie">N</label>
+        </td>
+        <td class="col-text">Czuję się bardzo skrępowany/a, spotykając nowych ludzi.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">13.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q13_t" name="q13" value="T">
+          <label class="choice" for="q13_t" aria-label="Pytanie 13: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q13_n" name="q13" value="N">
+          <label class="choice" for="q13_n" aria-label="Pytanie 13: Nie">N</label>
+        </td>
+        <td class="col-text">Łatwo skrzywdzić moje uczucia poprzez krytykę lub odrzucenie.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">14.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q14_t" name="q14" value="T">
+          <label class="choice" for="q14_t" aria-label="Pytanie 14: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q14_n" name="q14" value="N">
+          <label class="choice" for="q14_n" aria-label="Pytanie 14: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem osobą, na której zawsze można polegać.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">15.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q15_t" name="q15" value="T">
+          <label class="choice" for="q15_t" aria-label="Pytanie 15: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q15_n" name="q15" value="N">
+          <label class="choice" for="q15_n" aria-label="Pytanie 15: Nie">N</label>
+        </td>
+        <td class="col-text">Potrzeby innych osób przedkładam nad moje własne.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">16.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q16_t" name="q16" value="T">
+          <label class="choice" for="q16_t" aria-label="Pytanie 16: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q16_n" name="q16" value="N">
+          <label class="choice" for="q16_n" aria-label="Pytanie 16: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem osobą ciężko pracującą.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">17.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q17_t" name="q17" value="T">
+          <label class="choice" for="q17_t" aria-label="Pytanie 17: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q17_n" name="q17" value="N">
+          <label class="choice" for="q17_n" aria-label="Pytanie 17: Nie">N</label>
+        </td>
+        <td class="col-text">Wolę pracować dla kogoś, niż być szefem.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">18.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q18_t" name="q18" value="T">
+          <label class="choice" for="q18_t" aria-label="Pytanie 18: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q18_n" name="q18" value="N">
+          <label class="choice" for="q18_n" aria-label="Pytanie 18: Nie">N</label>
+        </td>
+        <td class="col-text">Naturalne dla mnie jest bycie uporządkowanym/ą i zorganizowanym/ą.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">19.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q19_t" name="q19" value="T">
+          <label class="choice" for="q19_t" aria-label="Pytanie 19: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q19_n" name="q19" value="N">
+          <label class="choice" for="q19_n" aria-label="Pytanie 19: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem osobą, która we wszystko wątpi.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">20.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q20_t" name="q20" value="T">
+          <label class="choice" for="q20_t" aria-label="Pytanie 20: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q20_n" name="q20" value="N">
+          <label class="choice" for="q20_n" aria-label="Pytanie 20: Nie">N</label>
+        </td>
+        <td class="col-text">Mój popęd płciowy był zawsze niewielki.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">21.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q21_t" name="q21" value="T">
+          <label class="choice" for="q21_t" aria-label="Pytanie 21: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q21_n" name="q21" value="N">
+          <label class="choice" for="q21_n" aria-label="Pytanie 21: Nie">N</label>
+        </td>
+        <td class="col-text">Zwykle potrzebuję ponad 9 godzin snu.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">22.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q22_t" name="q22" value="T">
+          <label class="choice" for="q22_t" aria-label="Pytanie 22: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q22_n" name="q22" value="N">
+          <label class="choice" for="q22_n" aria-label="Pytanie 22: Nie">N</label>
+        </td>
+        <td class="col-text">Często czuję się zmęczony/a bez powodu.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">23.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q23_t" name="q23" value="T">
+          <label class="choice" for="q23_t" aria-label="Pytanie 23: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q23_n" name="q23" value="N">
+          <label class="choice" for="q23_n" aria-label="Pytanie 23: Nie">N</label>
+        </td>
+        <td class="col-text">Miewam nagłe zmiany nastroju i energii.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">24.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q24_t" name="q24" value="T">
+          <label class="choice" for="q24_t" aria-label="Pytanie 24: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q24_n" name="q24" value="N">
+          <label class="choice" for="q24_n" aria-label="Pytanie 24: Nie">N</label>
+        </td>
+        <td class="col-text">Mój nastrój i poziom energii są bardzo wysokie lub niskie, rzadko znajdują się pośrodku.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">25.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q25_t" name="q25" value="T">
+          <label class="choice" for="q25_t" aria-label="Pytanie 25: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q25_n" name="q25" value="N">
+          <label class="choice" for="q25_n" aria-label="Pytanie 25: Nie">N</label>
+        </td>
+        <td class="col-text">Moja zdolność do myślenia waha się znacznie, od dobrego skupienia do braku koncentracji, bez istotnych powodów.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">26.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q26_t" name="q26" value="T">
+          <label class="choice" for="q26_t" aria-label="Pytanie 26: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q26_n" name="q26" value="N">
+          <label class="choice" for="q26_n" aria-label="Pytanie 26: Nie">N</label>
+        </td>
+        <td class="col-text">Mogę kogoś naprawdę lubić, a potem całkowicie stracić nim zainteresowanie.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">27.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q27_t" name="q27" value="T">
+          <label class="choice" for="q27_t" aria-label="Pytanie 27: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q27_n" name="q27" value="N">
+          <label class="choice" for="q27_n" aria-label="Pytanie 27: Nie">N</label>
+        </td>
+        <td class="col-text">Często wybucham gniewem wobec ludzi i czuję się z tego powodu winny/a.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">28.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q28_t" name="q28" value="T">
+          <label class="choice" for="q28_t" aria-label="Pytanie 28: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q28_n" name="q28" value="N">
+          <label class="choice" for="q28_n" aria-label="Pytanie 28: Nie">N</label>
+        </td>
+        <td class="col-text">Często zaczynam jakąś czynność i tracę nią zainteresowanie, nie kończąc jej.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">29.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q29_t" name="q29" value="T">
+          <label class="choice" for="q29_t" aria-label="Pytanie 29: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q29_n" name="q29" value="N">
+          <label class="choice" for="q29_n" aria-label="Pytanie 29: Nie">N</label>
+        </td>
+        <td class="col-text">Mój nastrój często zmienia się bez powodu.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">30.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q30_t" name="q30" value="T">
+          <label class="choice" for="q30_t" aria-label="Pytanie 30: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q30_n" name="q30" value="N">
+          <label class="choice" for="q30_n" aria-label="Pytanie 30: Nie">N</label>
+        </td>
+        <td class="col-text">Mój nastrój ciągle się zmienia: od żywotności po znużenie.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">31.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q31_t" name="q31" value="T">
+          <label class="choice" for="q31_t" aria-label="Pytanie 31: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q31_n" name="q31" value="N">
+          <label class="choice" for="q31_n" aria-label="Pytanie 31: Nie">N</label>
+        </td>
+        <td class="col-text">Niekiedy kładę się spać czując się źle, ale budzę się w doskonałym nastroju.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">32.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q32_t" name="q32" value="T">
+          <label class="choice" for="q32_t" aria-label="Pytanie 32: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q32_n" name="q32" value="N">
+          <label class="choice" for="q32_n" aria-label="Pytanie 32: Nie">N</label>
+        </td>
+        <td class="col-text">Niekiedy kładę się spać, czując się świetnie, ale budząc się rano czuję, że nie warto żyć.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">33.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q33_t" name="q33" value="T">
+          <label class="choice" for="q33_t" aria-label="Pytanie 33: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q33_n" name="q33" value="N">
+          <label class="choice" for="q33_n" aria-label="Pytanie 33: Nie">N</label>
+        </td>
+        <td class="col-text">Często mówią mi, że mam pesymistyczne nastawienie do świata i zapominam o wcześniejszych szczęśliwych czasach.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">34.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q34_t" name="q34" value="T">
+          <label class="choice" for="q34_t" aria-label="Pytanie 34: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q34_n" name="q34" value="N">
+          <label class="choice" for="q34_n" aria-label="Pytanie 34: Nie">N</label>
+        </td>
+        <td class="col-text">Waham się pomiędzy poczuciem nadmiernej pewności siebie i braku wiary w siebie.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">35.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q35_t" name="q35" value="T">
+          <label class="choice" for="q35_t" aria-label="Pytanie 35: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q35_n" name="q35" value="N">
+          <label class="choice" for="q35_n" aria-label="Pytanie 35: Nie">N</label>
+        </td>
+        <td class="col-text">Waham się pomiędzy byciem człowiekiem towarzyskim i wycofanym z życia społecznego.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">36.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q36_t" name="q36" value="T">
+          <label class="choice" for="q36_t" aria-label="Pytanie 36: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q36_n" name="q36" value="N">
+          <label class="choice" for="q36_n" aria-label="Pytanie 36: Nie">N</label>
+        </td>
+        <td class="col-text">Silnie odczuwam wszystkie emocje.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">37.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q37_t" name="q37" value="T">
+          <label class="choice" for="q37_t" aria-label="Pytanie 37: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q37_n" name="q37" value="N">
+          <label class="choice" for="q37_n" aria-label="Pytanie 37: Nie">N</label>
+        </td>
+        <td class="col-text">Moja potrzeba snu różni się znacznie, od kilku godzin do ponad 9 godzin na dobę.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">38.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q38_t" name="q38" value="T">
+          <label class="choice" for="q38_t" aria-label="Pytanie 38: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q38_n" name="q38" value="N">
+          <label class="choice" for="q38_n" aria-label="Pytanie 38: Nie">N</label>
+        </td>
+        <td class="col-text">Niekiedy postrzegam otoczenie w wesołych barwach, a niekiedy jako całkowicie bezbarwne.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">39.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q39_t" name="q39" value="T">
+          <label class="choice" for="q39_t" aria-label="Pytanie 39: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q39_n" name="q39" value="N">
+          <label class="choice" for="q39_n" aria-label="Pytanie 39: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem osobą, która potrafi być jednocześnie smutna i wesoła.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">40.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q40_t" name="q40" value="T">
+          <label class="choice" for="q40_t" aria-label="Pytanie 40: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q40_n" name="q40" value="N">
+          <label class="choice" for="q40_n" aria-label="Pytanie 40: Nie">N</label>
+        </td>
+        <td class="col-text">Dużo marzę o rzeczach, które inni uważają za niemożliwe do osiągnięcia.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">41.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q41_t" name="q41" value="T">
+          <label class="choice" for="q41_t" aria-label="Pytanie 41: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q41_n" name="q41" value="N">
+          <label class="choice" for="q41_n" aria-label="Pytanie 41: Nie">N</label>
+        </td>
+        <td class="col-text">Często odczuwam silną potrzebę dokonywania skandalicznych czynów.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">42.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q42_t" name="q42" value="T">
+          <label class="choice" for="q42_t" aria-label="Pytanie 42: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q42_n" name="q42" value="N">
+          <label class="choice" for="q42_n" aria-label="Pytanie 42: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem osobą, która szybko się zakochuje i odkochuje.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">43.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q43_t" name="q43" value="T">
+          <label class="choice" for="q43_t" aria-label="Pytanie 43: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q43_n" name="q43" value="N">
+          <label class="choice" for="q43_n" aria-label="Pytanie 43: Nie">N</label>
+        </td>
+        <td class="col-text">Zwykle jestem w dobrym lub radosnym nastroju.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">44.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q44_t" name="q44" value="T">
+          <label class="choice" for="q44_t" aria-label="Pytanie 44: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q44_n" name="q44" value="N">
+          <label class="choice" for="q44_n" aria-label="Pytanie 44: Nie">N</label>
+        </td>
+        <td class="col-text">Życie jest świętem, które obchodzę najweselej jak potrafię.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">45.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q45_t" name="q45" value="T">
+          <label class="choice" for="q45_t" aria-label="Pytanie 45: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q45_n" name="q45" value="N">
+          <label class="choice" for="q45_n" aria-label="Pytanie 45: Nie">N</label>
+        </td>
+        <td class="col-text">Lubię opowiadać dowcipy, ludzie mówią mi, że mam poczucie humoru.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">46.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q46_t" name="q46" value="T">
+          <label class="choice" for="q46_t" aria-label="Pytanie 46: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q46_n" name="q46" value="N">
+          <label class="choice" for="q46_n" aria-label="Pytanie 46: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem osobą, która uważa, że wszystko w końcu skończy się dobrze.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">47.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q47_t" name="q47" value="T">
+          <label class="choice" for="q47_t" aria-label="Pytanie 47: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q47_n" name="q47" value="N">
+          <label class="choice" for="q47_n" aria-label="Pytanie 47: Nie">N</label>
+        </td>
+        <td class="col-text">Mam duże zaufanie do siebie.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">48.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q48_t" name="q48" value="T">
+          <label class="choice" for="q48_t" aria-label="Pytanie 48: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q48_n" name="q48" value="N">
+          <label class="choice" for="q48_n" aria-label="Pytanie 48: Nie">N</label>
+        </td>
+        <td class="col-text">Często mam dużo wspaniałych pomysłów.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">49.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q49_t" name="q49" value="T">
+          <label class="choice" for="q49_t" aria-label="Pytanie 49: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q49_n" name="q49" value="N">
+          <label class="choice" for="q49_n" aria-label="Pytanie 49: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem ciągle w biegu.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">50.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q50_t" name="q50" value="T">
+          <label class="choice" for="q50_t" aria-label="Pytanie 50: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q50_n" name="q50" value="N">
+          <label class="choice" for="q50_n" aria-label="Pytanie 50: Nie">N</label>
+        </td>
+        <td class="col-text">Mogę wykonać wiele zadań i nawet wtedy nie jestem zmęczony/a.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">51.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q51_t" name="q51" value="T">
+          <label class="choice" for="q51_t" aria-label="Pytanie 51: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q51_n" name="q51" value="N">
+          <label class="choice" for="q51_n" aria-label="Pytanie 51: Nie">N</label>
+        </td>
+        <td class="col-text">Mam dar przemawiania, przekonywania i inspirowania innych osób.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">52.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q52_t" name="q52" value="T">
+          <label class="choice" for="q52_t" aria-label="Pytanie 52: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q52_n" name="q52" value="N">
+          <label class="choice" for="q52_n" aria-label="Pytanie 52: Nie">N</label>
+        </td>
+        <td class="col-text">Uwielbiam mierzyć się z nowymi projektami, nawet jeśli są one ryzykowne.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">53.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q53_t" name="q53" value="T">
+          <label class="choice" for="q53_t" aria-label="Pytanie 53: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q53_n" name="q53" value="N">
+          <label class="choice" for="q53_n" aria-label="Pytanie 53: Nie">N</label>
+        </td>
+        <td class="col-text">Gdy zdecyduję, że czegoś dokonam, nic nie może mnie zatrzymać.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">54.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q54_t" name="q54" value="T">
+          <label class="choice" for="q54_t" aria-label="Pytanie 54: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q54_n" name="q54" value="N">
+          <label class="choice" for="q54_n" aria-label="Pytanie 54: Nie">N</label>
+        </td>
+        <td class="col-text">Czuję się całkowicie pewnie, nawet z ludźmi, których niewiele znam.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">55.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q55_t" name="q55" value="T">
+          <label class="choice" for="q55_t" aria-label="Pytanie 55: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q55_n" name="q55" value="N">
+          <label class="choice" for="q55_n" aria-label="Pytanie 55: Nie">N</label>
+        </td>
+        <td class="col-text">Lubię przebywać z dużą liczbą ludzi.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">56.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q56_t" name="q56" value="T">
+          <label class="choice" for="q56_t" aria-label="Pytanie 56: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q56_n" name="q56" value="N">
+          <label class="choice" for="q56_n" aria-label="Pytanie 56: Nie">N</label>
+        </td>
+        <td class="col-text">Ludzie mówią mi, że często wtrącam się w nie swoje sprawy.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">57.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q57_t" name="q57" value="T">
+          <label class="choice" for="q57_t" aria-label="Pytanie 57: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q57_n" name="q57" value="N">
+          <label class="choice" for="q57_n" aria-label="Pytanie 57: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem znany/a z tego, że jestem hojny i wydaję dużo pieniędzy na potrzeby innych osób.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">58.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q58_t" name="q58" value="T">
+          <label class="choice" for="q58_t" aria-label="Pytanie 58: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q58_n" name="q58" value="N">
+          <label class="choice" for="q58_n" aria-label="Pytanie 58: Nie">N</label>
+        </td>
+        <td class="col-text">Posiadam zdolności i doświadczenie w wielu dziedzinach.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">59.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q59_t" name="q59" value="T">
+          <label class="choice" for="q59_t" aria-label="Pytanie 59: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q59_n" name="q59" value="N">
+          <label class="choice" for="q59_n" aria-label="Pytanie 59: Nie">N</label>
+        </td>
+        <td class="col-text">Czuję, że mam prawo i przywilej postępować tak jak mi się podoba.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">60.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q60_t" name="q60" value="T">
+          <label class="choice" for="q60_t" aria-label="Pytanie 60: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q60_n" name="q60" value="N">
+          <label class="choice" for="q60_n" aria-label="Pytanie 60: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem osobą, która lubi być szefem.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">61.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q61_t" name="q61" value="T">
+          <label class="choice" for="q61_t" aria-label="Pytanie 61: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q61_n" name="q61" value="N">
+          <label class="choice" for="q61_n" aria-label="Pytanie 61: Nie">N</label>
+        </td>
+        <td class="col-text">Gdy się z kimś nie zgadzam, mogę używać siły fizycznej.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">62.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q62_t" name="q62" value="T">
+          <label class="choice" for="q62_t" aria-label="Pytanie 62: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q62_n" name="q62" value="N">
+          <label class="choice" for="q62_n" aria-label="Pytanie 62: Nie">N</label>
+        </td>
+        <td class="col-text">Mój popęd płciowy jest zawsze duży.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">63.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q63_t" name="q63" value="T">
+          <label class="choice" for="q63_t" aria-label="Pytanie 63: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q63_n" name="q63" value="N">
+          <label class="choice" for="q63_n" aria-label="Pytanie 63: Nie">N</label>
+        </td>
+        <td class="col-text">Zwykle nie potrzebuję więcej niż 6 godzin snu na dobę.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">64.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q64_t" name="q64" value="T">
+          <label class="choice" for="q64_t" aria-label="Pytanie 64: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q64_n" name="q64" value="N">
+          <label class="choice" for="q64_n" aria-label="Pytanie 64: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem zrzędliwą (drażliwą) osobą.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">65.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q65_t" name="q65" value="T">
+          <label class="choice" for="q65_t" aria-label="Pytanie 65: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q65_n" name="q65" value="N">
+          <label class="choice" for="q65_n" aria-label="Pytanie 65: Nie">N</label>
+        </td>
+        <td class="col-text">Z natury jestem niezadowolony/a.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">66.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q66_t" name="q66" value="T">
+          <label class="choice" for="q66_t" aria-label="Pytanie 66: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q66_n" name="q66" value="N">
+          <label class="choice" for="q66_n" aria-label="Pytanie 66: Nie">N</label>
+        </td>
+        <td class="col-text">Dużo narzekam.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">67.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q67_t" name="q67" value="T">
+          <label class="choice" for="q67_t" aria-label="Pytanie 67: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q67_n" name="q67" value="N">
+          <label class="choice" for="q67_n" aria-label="Pytanie 67: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem bardzo krytyczny wobec innych.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">68.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q68_t" name="q68" value="T">
+          <label class="choice" for="q68_t" aria-label="Pytanie 68: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q68_n" name="q68" value="N">
+          <label class="choice" for="q68_n" aria-label="Pytanie 68: Nie">N</label>
+        </td>
+        <td class="col-text">Często czuję się nerwowy.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">69.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q69_t" name="q69" value="T">
+          <label class="choice" for="q69_t" aria-label="Pytanie 69: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q69_n" name="q69" value="N">
+          <label class="choice" for="q69_n" aria-label="Pytanie 69: Nie">N</label>
+        </td>
+        <td class="col-text">Często odczuwam bardzo silne napięcie.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">70.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q70_t" name="q70" value="T">
+          <label class="choice" for="q70_t" aria-label="Pytanie 70: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q70_n" name="q70" value="N">
+          <label class="choice" for="q70_n" aria-label="Pytanie 70: Nie">N</label>
+        </td>
+        <td class="col-text">Napędza mnie nieprzyjemny niepokój, którego nie rozumiem.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">71.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q71_t" name="q71" value="T">
+          <label class="choice" for="q71_t" aria-label="Pytanie 71: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q71_n" name="q71" value="N">
+          <label class="choice" for="q71_n" aria-label="Pytanie 71: Nie">N</label>
+        </td>
+        <td class="col-text">Często jestem tak wściekły/a, że mógłbym/mogłabym zniszczyć wszystko wokół siebie.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">72.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q72_t" name="q72" value="T">
+          <label class="choice" for="q72_t" aria-label="Pytanie 72: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q72_n" name="q72" value="N">
+          <label class="choice" for="q72_n" aria-label="Pytanie 72: Nie">N</label>
+        </td>
+        <td class="col-text">Gdy ktoś mi się sprzeciwia, mogę wdać się w bójkę.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">73.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q73_t" name="q73" value="T">
+          <label class="choice" for="q73_t" aria-label="Pytanie 73: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q73_n" name="q73" value="N">
+          <label class="choice" for="q73_n" aria-label="Pytanie 73: Nie">N</label>
+        </td>
+        <td class="col-text">Ludzie mówią mi, że wybucham bez powodu.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">74.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q74_t" name="q74" value="T">
+          <label class="choice" for="q74_t" aria-label="Pytanie 74: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q74_n" name="q74" value="N">
+          <label class="choice" for="q74_n" aria-label="Pytanie 74: Nie">N</label>
+        </td>
+        <td class="col-text">Gdy jestem zły, krzyczę na ludzi.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">75.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q75_t" name="q75" value="T">
+          <label class="choice" for="q75_t" aria-label="Pytanie 75: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q75_n" name="q75" value="N">
+          <label class="choice" for="q75_n" aria-label="Pytanie 75: Nie">N</label>
+        </td>
+        <td class="col-text">Lubię droczyć się z ludźmi, nawet z tymi, których nie znam.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">76.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q76_t" name="q76" value="T">
+          <label class="choice" for="q76_t" aria-label="Pytanie 76: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q76_n" name="q76" value="N">
+          <label class="choice" for="q76_n" aria-label="Pytanie 76: Nie">N</label>
+        </td>
+        <td class="col-text">Moje cięte poczucie humoru przysporzyło mi wiele kłopotów.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">77.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q77_t" name="q77" value="T">
+          <label class="choice" for="q77_t" aria-label="Pytanie 77: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q77_n" name="q77" value="N">
+          <label class="choice" for="q77_n" aria-label="Pytanie 77: Nie">N</label>
+        </td>
+        <td class="col-text">Mogę być tak wściekły/a, że mogę zrobić komuś krzywdę.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">78.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q78_t" name="q78" value="T">
+          <label class="choice" for="q78_t" aria-label="Pytanie 78: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q78_n" name="q78" value="N">
+          <label class="choice" for="q78_n" aria-label="Pytanie 78: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem tak zazdrosny/a o moją/mojego żonę/męża (lub kochankę/a), że nie mogę tego znieść.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">79.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q79_t" name="q79" value="T">
+          <label class="choice" for="q79_t" aria-label="Pytanie 79: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q79_n" name="q79" value="N">
+          <label class="choice" for="q79_n" aria-label="Pytanie 79: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem znany/a z tego, że wiele przeklinam.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">80.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q80_t" name="q80" value="T">
+          <label class="choice" for="q80_t" aria-label="Pytanie 80: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q80_n" name="q80" value="N">
+          <label class="choice" for="q80_n" aria-label="Pytanie 80: Nie">N</label>
+        </td>
+        <td class="col-text">Mówiono mi, że staję się agresywny/a zaledwie po kilku drinkach.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">81.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q81_t" name="q81" value="T">
+          <label class="choice" for="q81_t" aria-label="Pytanie 81: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q81_n" name="q81" value="N">
+          <label class="choice" for="q81_n" aria-label="Pytanie 81: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem bardzo sceptyczną osobą.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">82.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q82_t" name="q82" value="T">
+          <label class="choice" for="q82_t" aria-label="Pytanie 82: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q82_n" name="q82" value="N">
+          <label class="choice" for="q82_n" aria-label="Pytanie 82: Nie">N</label>
+        </td>
+        <td class="col-text">Mógłbym/mogłabym być buntownikiem/buntowniczką.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">83.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q83_t" name="q83" value="T">
+          <label class="choice" for="q83_t" aria-label="Pytanie 83: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q83_n" name="q83" value="N">
+          <label class="choice" for="q83_n" aria-label="Pytanie 83: Nie">N</label>
+        </td>
+        <td class="col-text">Mój popęd płciowy jest często tak nasilony, że jest to naprawdę nieprzyjemne.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">84.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q84_t" name="q84" value="T">
+          <label class="choice" for="q84_t" aria-label="Pytanie 84: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q84_n" name="q84" value="N">
+          <label class="choice" for="q84_n" aria-label="Pytanie 84: Nie">N</label>
+        </td>
+        <td class="col-text">(Tylko kobiety): Tuż przed okresem mam nagłe ataki niekontrolowanego gniewu.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">85.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q85_t" name="q85" value="T">
+          <label class="choice" for="q85_t" aria-label="Pytanie 85: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q85_n" name="q85" value="N">
+          <label class="choice" for="q85_n" aria-label="Pytanie 85: Nie">N</label>
+        </td>
+        <td class="col-text">Odkąd tylko pamiętam, zawsze dużo się martwiłem/am.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">86.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q86_t" name="q86" value="T">
+          <label class="choice" for="q86_t" aria-label="Pytanie 86: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q86_n" name="q86" value="N">
+          <label class="choice" for="q86_n" aria-label="Pytanie 86: Nie">N</label>
+        </td>
+        <td class="col-text">Zawsze martwię się o jakąś sprawę.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">87.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q87_t" name="q87" value="T">
+          <label class="choice" for="q87_t" aria-label="Pytanie 87: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q87_n" name="q87" value="N">
+          <label class="choice" for="q87_n" aria-label="Pytanie 87: Nie">N</label>
+        </td>
+        <td class="col-text">Ciągle martwią mnie codzienne sprawy, które inni uważają za mało istotne.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">88.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q88_t" name="q88" value="T">
+          <label class="choice" for="q88_t" aria-label="Pytanie 88: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q88_n" name="q88" value="N">
+          <label class="choice" for="q88_n" aria-label="Pytanie 88: Nie">N</label>
+        </td>
+        <td class="col-text">Nie mogę przestać się martwić.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">89.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q89_t" name="q89" value="T">
+          <label class="choice" for="q89_t" aria-label="Pytanie 89: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q89_n" name="q89" value="N">
+          <label class="choice" for="q89_n" aria-label="Pytanie 89: Nie">N</label>
+        </td>
+        <td class="col-text">Wiele osób mówiło, bym nie martwił/a się tak wiele.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">90.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q90_t" name="q90" value="T">
+          <label class="choice" for="q90_t" aria-label="Pytanie 90: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q90_n" name="q90" value="N">
+          <label class="choice" for="q90_n" aria-label="Pytanie 90: Nie">N</label>
+        </td>
+        <td class="col-text">W sytuacjach napięcia mam często pustkę w głowie.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">91.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q91_t" name="q91" value="T">
+          <label class="choice" for="q91_t" aria-label="Pytanie 91: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q91_n" name="q91" value="N">
+          <label class="choice" for="q91_n" aria-label="Pytanie 91: Nie">N</label>
+        </td>
+        <td class="col-text">Nie potrafię się odprężyć.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">92.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q92_t" name="q92" value="T">
+          <label class="choice" for="q92_t" aria-label="Pytanie 92: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q92_n" name="q92" value="N">
+          <label class="choice" for="q92_n" aria-label="Pytanie 92: Nie">N</label>
+        </td>
+        <td class="col-text">Często czuję się wewnętrznie roztrzęsiony/a.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">93.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q93_t" name="q93" value="T">
+          <label class="choice" for="q93_t" aria-label="Pytanie 93: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q93_n" name="q93" value="N">
+          <label class="choice" for="q93_n" aria-label="Pytanie 93: Nie">N</label>
+        </td>
+        <td class="col-text">W sytuacjach napięcia, często trzęsą mi się ręce.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">94.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q94_t" name="q94" value="T">
+          <label class="choice" for="q94_t" aria-label="Pytanie 94: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q94_n" name="q94" value="N">
+          <label class="choice" for="q94_n" aria-label="Pytanie 94: Nie">N</label>
+        </td>
+        <td class="col-text">Często odczuwam dyskomfort w brzuchu.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">95.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q95_t" name="q95" value="T">
+          <label class="choice" for="q95_t" aria-label="Pytanie 95: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q95_n" name="q95" value="N">
+          <label class="choice" for="q95_n" aria-label="Pytanie 95: Nie">N</label>
+        </td>
+        <td class="col-text">Gdy jestem zdenerwowany/a, miewam biegunkę.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">96.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q96_t" name="q96" value="T">
+          <label class="choice" for="q96_t" aria-label="Pytanie 96: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q96_n" name="q96" value="N">
+          <label class="choice" for="q96_n" aria-label="Pytanie 96: Nie">N</label>
+        </td>
+        <td class="col-text">Gdy jestem zdenerwowany/a, często odczuwam nudności.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">97.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q97_t" name="q97" value="T">
+          <label class="choice" for="q97_t" aria-label="Pytanie 97: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q97_n" name="q97" value="N">
+          <label class="choice" for="q97_n" aria-label="Pytanie 97: Nie">N</label>
+        </td>
+        <td class="col-text">Gdy jestem zdenerwowany/a, częściej chodzę do toalety.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">98.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q98_t" name="q98" value="T">
+          <label class="choice" for="q98_t" aria-label="Pytanie 98: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q98_n" name="q98" value="N">
+          <label class="choice" for="q98_n" aria-label="Pytanie 98: Nie">N</label>
+        </td>
+        <td class="col-text">Gdy ktoś do późna nie przychodzi do domu, martwię się, że mógł mieć wypadek.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">99.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q99_t" name="q99" value="T">
+          <label class="choice" for="q99_t" aria-label="Pytanie 99: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q99_n" name="q99" value="N">
+          <label class="choice" for="q99_n" aria-label="Pytanie 99: Nie">N</label>
+        </td>
+        <td class="col-text">Często martwię się, że ktoś w mojej rodzinie może zachorować na ciężką chorobę.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">100.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q100_t" name="q100" value="T">
+          <label class="choice" for="q100_t" aria-label="Pytanie 100: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q100_n" name="q100" value="N">
+          <label class="choice" for="q100_n" aria-label="Pytanie 100: Nie">N</label>
+        </td>
+        <td class="col-text">Często myślę, że ktoś może powiedzieć mi złą wiadomość na temat członka mojej rodziny.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">101.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q101_t" name="q101" value="T">
+          <label class="choice" for="q101_t" aria-label="Pytanie 101: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q101_n" name="q101" value="N">
+          <label class="choice" for="q101_n" aria-label="Pytanie 101: Nie">N</label>
+        </td>
+        <td class="col-text">Mój sen jest niespokojny.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">102.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q102_t" name="q102" value="T">
+          <label class="choice" for="q102_t" aria-label="Pytanie 102: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q102_n" name="q102" value="N">
+          <label class="choice" for="q102_n" aria-label="Pytanie 102: Nie">N</label>
+        </td>
+        <td class="col-text">Mam często problemy z zasypianiem.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">103.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q103_t" name="q103" value="T">
+          <label class="choice" for="q103_t" aria-label="Pytanie 103: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q103_n" name="q103" value="N">
+          <label class="choice" for="q103_n" aria-label="Pytanie 103: Nie">N</label>
+        </td>
+        <td class="col-text">Jestem z natury bardzo ostrożną osobą.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">104.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q104_t" name="q104" value="T">
+          <label class="choice" for="q104_t" aria-label="Pytanie 104: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q104_n" name="q104" value="N">
+          <label class="choice" for="q104_n" aria-label="Pytanie 104: Nie">N</label>
+        </td>
+        <td class="col-text">Często budzę się w nocy, myśląc, że włamywacze są w moim domu.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">105.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q105_t" name="q105" value="T">
+          <label class="choice" for="q105_t" aria-label="Pytanie 105: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q105_n" name="q105" value="N">
+          <label class="choice" for="q105_n" aria-label="Pytanie 105: Nie">N</label>
+        </td>
+        <td class="col-text">Gdy jestem zdenerwowany/a, często boli mnie głowa.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">106.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q106_t" name="q106" value="T">
+          <label class="choice" for="q106_t" aria-label="Pytanie 106: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q106_n" name="q106" value="N">
+          <label class="choice" for="q106_n" aria-label="Pytanie 106: Nie">N</label>
+        </td>
+        <td class="col-text">Gdy jestem spięty/a, mam nieprzyjemne uczucie w klatce piersiowej.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">107.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q107_t" name="q107" value="T">
+          <label class="choice" for="q107_t" aria-label="Pytanie 107: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q107_n" name="q107" value="N">
+          <label class="choice" for="q107_n" aria-label="Pytanie 107: Nie">N</label>
+        </td>
+        <td class="col-text">Mam małe poczucie bezpieczeństwa.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">108.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q108_t" name="q108" value="T">
+          <label class="choice" for="q108_t" aria-label="Pytanie 108: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q108_n" name="q108" value="N">
+          <label class="choice" for="q108_n" aria-label="Pytanie 108: Nie">N</label>
+        </td>
+        <td class="col-text">Nawet niewielkie zmiany w codziennych zajęciach, powodują, że jestem bardzo spięty/a.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">109.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q109_t" name="q109" value="T">
+          <label class="choice" for="q109_t" aria-label="Pytanie 109: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q109_n" name="q109" value="N">
+          <label class="choice" for="q109_n" aria-label="Pytanie 109: Nie">N</label>
+        </td>
+        <td class="col-text">Podczas prowadzenia samochodu, nawet gdy nie zrobię nic złego, obawiam się, że może zatrzymać mnie policja.</td>
+      </tr>
+
+      <tr>
+        <td class="col-num">110.</td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q110_t" name="q110" value="T">
+          <label class="choice" for="q110_t" aria-label="Pytanie 110: Tak">T</label>
+        </td>
+        <td class="col-tn">
+          <input class="visually-hidden" type="radio" id="q110_n" name="q110" value="N">
+          <label class="choice" for="q110_n" aria-label="Pytanie 110: Nie">N</label>
+        </td>
+        <td class="col-text">Łatwo przestraszają mnie gwałtowne hałasy.</td>
+      </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="btnScore">Pokaż wynik</button>
+        <button type="reset" id="btnReset">Wyczyść</button>
+      </div>
+
+      <div class="note">
+        Wynik obliczany jest jako: (suma odpowiedzi „T” w podskali) / (liczba pytań w podskali), czyli w zakresie 0–1.
+      </div>
+
+      <div id="errorBox" class="error" role="alert"></div>
+
+      <section id="resultsBox" class="results" aria-live="polite">
+        <h2>Wyniki</h2>
+
+        <div class="result-line" id="resDep"></div>
+        <div class="result-line" id="resCyk"></div>
+        <div class="result-line" id="resHip"></div>
+        <div class="result-line" id="resDra"></div>
+        <div class="result-line" id="resLek"></div>
+
+        <div class="profile-box">
+          <div class="result-line" id="resProfile"></div>
+          <div class="result-line" id="resProfileExplain"></div>
+        </div>
+      </section>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById('tempsForm');
+    const errorBox = document.getElementById('errorBox');
+    const resultsBox = document.getElementById('resultsBox');
+
+    const btnScore = document.getElementById('btnScore');
+    const btnReset = document.getElementById('btnReset');
+
+    function getSex() {
+      return form.querySelector('input[name="plec"]:checked')?.value || '';
+    }
+
+    function setError(msg) {
+      errorBox.textContent = msg;
+      errorBox.style.display = 'block';
+      resultsBox.style.display = 'none';
+    }
+
+    function clearError() {
+      errorBox.textContent = '';
+      errorBox.style.display = 'none';
+    }
+
+    function getAnswer(q) {
+      return form.querySelector(`input[name="q${q}"]:checked`)?.value || '';
+    }
+
+    function disableQ84ForMaleIfNeeded() {
+      const sex = getSex();
+      const q84t = document.getElementById('q84_t');
+      const q84n = document.getElementById('q84_n');
+
+      // Jeśli wybrano "M", pytanie 84 jest "tylko kobiety" → wyłączamy wybór i czyścimy ewentualną odpowiedź.
+      if (sex === 'M') {
+        q84t.checked = false;
+        q84n.checked = false;
+        q84t.disabled = true;
+        q84n.disabled = true;
+
+        // Zdejmij wizualne zaznaczenie (bo disabled nie usuwa stylu w każdej przeglądarce)
+        q84t.nextElementSibling.style.opacity = '0.35';
+        q84n.nextElementSibling.style.opacity = '0.35';
+        q84t.nextElementSibling.style.cursor = 'not-allowed';
+        q84n.nextElementSibling.style.cursor = 'not-allowed';
+      } else {
+        q84t.disabled = false;
+        q84n.disabled = false;
+        q84t.nextElementSibling.style.opacity = '1';
+        q84n.nextElementSibling.style.opacity = '1';
+        q84t.nextElementSibling.style.cursor = 'pointer';
+        q84n.nextElementSibling.style.cursor = 'pointer';
+      }
+    }
+
+    form.addEventListener('change', (e) => {
+      if (e.target?.name === 'plec') {
+        disableQ84ForMaleIfNeeded();
+      }
+    });
+
+    function countYes(range) {
+      let yes = 0;
+      for (const q of range) {
+        const a = getAnswer(q);
+        if (a === 'T') yes++;
+      }
+      return yes;
+    }
+
+    function levelLabel(x) {
+      // Prosta, praktyczna kategoryzacja (0–1)
+      if (x >= 0.75) return "bardzo wysoki";
+      if (x >= 0.50) return "wysoki";
+      if (x >= 0.25) return "umiarkowany";
+      return "niski";
+    }
+
+    function fmt(x) {
+      return x.toFixed(2).replace('.', ',');
+    }
+
+    function buildLine(name, yes, denom, score) {
+      const lvl = levelLabel(score);
+      return `<strong>${name}:</strong> ${yes} / ${denom} = ${fmt(score)} (nasilenie: ${lvl})`;
+    }
+
+    function computeProfile(scores) {
+      const D = scores.dep;
+      const C = scores.cyk;
+      const H = scores.hip;
+      const I = scores.dra;
+      const A = scores.lek;
+
+      const maxVal = Math.max(D, C, H, I, A);
+      const top = [];
+      if (Math.abs(D - maxVal) < 1e-9) top.push("depresyjny");
+      if (Math.abs(C - maxVal) < 1e-9) top.push("cyklotymiczny");
+      if (Math.abs(H - maxVal) < 1e-9) top.push("hipertymiczny");
+      if (Math.abs(I - maxVal) < 1e-9) top.push("drażliwy");
+      if (Math.abs(A - maxVal) < 1e-9) top.push("lękowy");
+
+      function inRange(x, lo, hi) {
+        return x >= lo && x < hi;
+      }
+
+      // Heurystyka oparta na pliku "TEMPS-A - interpretacja kliniczna"
+      let chad = 0;
+      if (C >= 0.50) chad += 3;
+      else if (C >= 0.25) chad += 1;
+      if (top.includes("cyklotymiczny")) chad += 2;
+
+      if (H >= 0.25) chad += 1;
+      if (H >= 0.50) chad += 1;
+
+      if (I >= 0.25 && I < 0.75) chad += 1; // umiarkowany / wysoki, ale nie "bardzo wysoki"
+      if (A < 0.50) chad += 1; // niski–umiarkowany
+
+      let bpd = 0;
+      if (I >= 0.50) bpd += 2;
+      if (I >= 0.75) bpd += 1;
+      if (A >= 0.50) bpd += 2;
+      if (A >= 0.75) bpd += 1;
+      if (D >= 0.50) bpd += 1;
+      if (C < 0.50) bpd += 1;
+      if (H < 0.25) bpd += 1;
+
+      let adhd = 0;
+      if (H >= 0.25 && H < 0.75) adhd += 1;
+      if (H >= 0.50) adhd += 1;
+      if (I >= 0.25 && I < 0.75) adhd += 1;
+      if (C < 0.25) adhd += 2;
+      else if (C < 0.50) adhd += 1;
+      if (A < 0.50) adhd += 1;
+      if (D < 0.50) adhd += 1;
+
+      const scoresMap = [
+        ["ChAD (zwłaszcza ChAD II / spektrum)", chad],
+        ["BPD / zaburzenia osobowości", bpd],
+        ["ADHD (u dorosłych)", adhd],
+      ];
+
+      scoresMap.sort((a,b) => b[1] - a[1]);
+
+      const best = scoresMap[0];
+      const second = scoresMap[1];
+
+      // Jeśli różnica mała, zwróć "niejednoznaczny"
+      if (best[1] === 0) {
+        return {
+          label: "Profil niejednoznaczny w oparciu o same wyniki TEMPS-A.",
+          explain: "Aby rozróżnić ChAD/BPD/ADHD potrzebny jest wywiad kliniczny i dodatkowe narzędzia."
+        };
+      }
+
+      if ((best[1] - second[1]) <= 1) {
+        return {
+          label: `Profil mieszany / niejednoznaczny (najbliżej: ${best[0]}).`,
+          explain: `Porównawczo: ${scoresMap.map(x => `${x[0]} = ${x[1]}`).join(" | ")}`
+        };
+      }
+
+      // Zgodnie z "Skrótami decyzyjnymi" z interpretacji klinicznej
+      let explain = "";
+      if (best[0].startsWith("ChAD")) {
+        explain = "Cyklotymia ↑↑ (często najwyższa skala) + hipertymia ↑ → profil bardziej zgodny z ChAD (wymaga potwierdzenia epizodyczności w wywiadzie).";
+      } else if (best[0].startsWith("BPD")) {
+        explain = "Drażliwość ↑↑ + lęk ↑↑ + (często) depresyjność ↑ przy braku wyraźnej cyklotymii → profil bardziej zgodny z zaburzeniami osobowości (w tym BPD).";
+      } else {
+        explain = "Hipertymia ↑ przy niskiej cyklotymii → profil częściej spotykany w ADHD niż w ChAD (wymaga oceny objawów od dzieciństwa i stałości w czasie).";
+      }
+
+      return {
+        label: `Komentarz: ${best[0]}`,
+        explain
+      };
+    }
+
+    btnScore.addEventListener('click', () => {
+      clearError();
+      disableQ84ForMaleIfNeeded();
+
+      const sex = getSex();
+      if (!sex) {
+        setError("Uzupełnij pole: Płeć (K / M).");
+        return;
+      }
+
+      // Zakresy podskal (numery pytań)
+      const dep = Array.from({length: 21}, (_,i) => i + 1);        // 1–21
+      const cyk = Array.from({length: 21}, (_,i) => i + 22);       // 22–42
+      const hip = Array.from({length: 21}, (_,i) => i + 43);       // 43–63
+      const draFull = Array.from({length: 21}, (_,i) => i + 64);   // 64–84
+      const lek = Array.from({length: 26}, (_,i) => i + 85);       // 85–110
+
+      const dra = (sex === "M") ? draFull.filter(x => x !== 84) : draFull;
+
+      // Walidacja odpowiedzi
+      const missing = [];
+      function checkRange(range) {
+        for (const q of range) {
+          if (!getAnswer(q)) missing.push(q);
+        }
+      }
+      checkRange(dep);
+      checkRange(cyk);
+      checkRange(hip);
+      checkRange(dra);
+      checkRange(lek);
+
+      if (missing.length) {
+        missing.sort((a,b)=>a-b);
+        setError("Uzupełnij wszystkie odpowiedzi (brak odpowiedzi w pytaniach: " + missing.join(", ") + ").");
+        return;
+      }
+
+      // Obliczenia
+      const depYes = countYes(dep);
+      const cykYes = countYes(cyk);
+      const hipYes = countYes(hip);
+      const draYes = countYes(dra);
+      const lekYes = countYes(lek);
+
+      const depScore = depYes / dep.length;
+      const cykScore = cykYes / cyk.length;
+      const hipScore = hipYes / hip.length;
+      const draScore = draYes / dra.length;
+      const lekScore = lekYes / lek.length;
+
+      document.getElementById('resDep').innerHTML = buildLine("Temperament depresyjny", depYes, dep.length, depScore);
+      document.getElementById('resCyk').innerHTML = buildLine("Temperament cyklotymiczny", cykYes, cyk.length, cykScore);
+      document.getElementById('resHip').innerHTML = buildLine("Temperament hipertymiczny", hipYes, hip.length, hipScore);
+      document.getElementById('resDra').innerHTML = buildLine("Temperament drażliwy", draYes, dra.length, draScore);
+      document.getElementById('resLek').innerHTML = buildLine("Temperament lękowy", lekYes, lek.length, lekScore);
+
+      const profile = computeProfile({
+        dep: depScore,
+        cyk: cykScore,
+        hip: hipScore,
+        dra: draScore,
+        lek: lekScore
+      });
+
+      document.getElementById('resProfile').innerHTML = `<strong>${profile.label}</strong>`;
+      document.getElementById('resProfileExplain').textContent = profile.explain;
+
+      resultsBox.style.display = 'block';
+      resultsBox.scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+
+    btnReset.addEventListener('click', () => {
+      clearError();
+      resultsBox.style.display = 'none';
+      // Po resecie przywróć możliwość zaznaczania pytania 84
+      setTimeout(disableQ84ForMaleIfNeeded, 0);
+    });
+  </script>
+</body>
+</html>
